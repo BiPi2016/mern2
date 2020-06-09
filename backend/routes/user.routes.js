@@ -36,25 +36,29 @@ router.put('/update/:id', (req, res, next) => {
     const newUser = {
         username: req.body.username
     };
-    /* User.findByIdAndUpdate(req.params.id, {username}, {new: true}, (err, user) => {
-        if(err)
-           return res.status(404).json('Error ' + err);
-        console.log(user);
-        return res.json('User updated ' + user);        
-    }); */
-    User.findById(req.params.id)
-        .then( user => res.json('User updated ' + user))
-        .catch(err => res.status(404).json('Error occured ' + err));
+    User.findByIdAndUpdate(req.params.id, newUser, {new: true})
+    .then(updatedUser => {
+        if(!updatedUser)
+            return next();
+        return res.json( {
+            message: 'User updated',
+            user: updatedUser
+        });
+    })
+    .catch(err => next(err));
 });
 
 router.delete('/delete/:id', (req, res, next) => {
-    User.findByIdAndDelete(req.params.id, (err, user) => {
-        if(err)
-            return res.status(404).json('Error occured ' + err);
-        return res.json('User deleted ' + user);
-    });
+    User.findByIdAndDelete(req.params.id)
+    .then( deletedUser => {
+        if(!deletedUser)
+            return next();
+        return res.json( {
+            message: 'User deleted',
+            user: deletedUser
+        });
+    })
+    .catch(err => next(err));
 });
-
-
 
 module.exports = router;
