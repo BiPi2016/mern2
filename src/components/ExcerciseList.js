@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import {Link} from 'react-router-dom';
 
 class ExcerciseList extends React.Component {
     constructor(props) {
@@ -12,7 +13,6 @@ class ExcerciseList extends React.Component {
     }
 
     componentDidMount() {
-        alert('loading');
         axios.get('http://localhost:4000/excercises')    
         .then( response => response.data)
         .then(data => this.setState({

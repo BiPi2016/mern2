@@ -14,9 +14,14 @@ function App() {
     <div className="App">
       <Router>
           <Navbar />
-          <Switch>
-            <Route path = "/excercises">
+            <Route exact path="/">
               <ExcerciseList />
+            </Route>
+            <Route exact path="/excercises">
+              <ExcerciseList />
+            </Route>
+            <Route path="/createExcercise/:id">
+              <CreateExcercise />
             </Route>
             <Route path="/createExcercise">
               <CreateExcercise />
@@ -27,7 +32,6 @@ function App() {
             <Route path="/createUser">
               <CreateUser />
             </Route>
-          </Switch>
       </Router>
     </div>
   );

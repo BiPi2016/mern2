@@ -64,11 +64,13 @@ class CreateExcercise extends React.Component {
             duration: this.state.duration,
             date: this.state.date
         }
-        console.log(excercise);
         Axios.post('http://localhost:4000/excercises/add', excercise)
-        .then( response => console.log(response))
+        .then( response => {
+            console.log(response.data);
+            window.location = '/';
+            return(response.data);
+        })
         .catch( err => console.log(err));
-
     }
 
     render() {
@@ -94,6 +96,7 @@ class CreateExcercise extends React.Component {
                     <div className="form-group">
                         <label htmlFor="description">Description</label>
                         <input type="text" 
+                        required
                         className="form-control" 
                         id="description" 
                         value={this.state.description}
@@ -102,6 +105,7 @@ class CreateExcercise extends React.Component {
                     <div className="form-group">
                         <label htmlFor="duration">Duration <small id="duration" className="text-muted">(In minutes)</small></label>
                         <input 
+                         required
                          type="number" 
                          className="form-control" 
                          id="duration" 
