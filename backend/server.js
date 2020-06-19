@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+var morgan = require('morgan');
 
 const userRoutes = require('./routes/user.routes');
 const excerciseRoutes = require('./routes/excercise.routes');
@@ -26,13 +27,14 @@ const app = express();
 const port = process.env.PORT || 4000;
 
 app.use(cors());
+app.use(morgan('combined'));
 app.use(express.json());
 app.use('/users', userRoutes);
 app.use('/excercises', excerciseRoutes);
 
 app.use('*', (req, res, next) => {
     const error = new Error('Resource not found');
-    error.code = 400;
+    error.code = 404;
     next(error);
 });
 

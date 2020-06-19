@@ -39,7 +39,7 @@ class ExcerciseList extends React.Component {
 
     render() {
         return(
-            <div>
+            <div className="container">
                 <h1>Logged excercises</h1>
                 <table className="table">
                     <thead className="thead-dark">
@@ -74,6 +74,7 @@ const Excercise = props => {
             <td>{excercise.date}</td>
             <td>
                 <button type="button" className="btn btn-link" onClick={() => props.edit(excercise._id)}>Edit</button>
+                |
                 <button type="button" className="btn btn-link" onClick={() => props.delete(excercise._id)}>Delete</button>
             </td>
         </tr>

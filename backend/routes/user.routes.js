@@ -3,11 +3,14 @@ const router = express.Router();
 const User = require('../models/user.model');
 
 router.get('/', (req, res, next) => {
-   User.find({}, (err, users) => {
+   /* User.find({}, (err, users) => {
        if(err)
             return res.status(404).json("Error occured " + err);
         res.json(users);
-   })
+   }) */
+   User.find({})
+   .then(result => res.json(result))
+   .catch(err => next(err));
 });
 
 router.post('/add', (req, res, next) => {
@@ -16,10 +19,14 @@ router.post('/add', (req, res, next) => {
         username
     });
     newUser.save((err, user) => {
-        if(err)
-            res.status(404).json('Error saving user' + err);
+        if(err) {
+            console.log('Error ' + err);
+            return next();
+        }
+            
         return res.json('User saved' + user);
     })
+
 });
 
 router.get('/:id', (req, res, next) => {

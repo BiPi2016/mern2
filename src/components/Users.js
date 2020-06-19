@@ -2,11 +2,8 @@ import React from 'react';
 import Axios from 'axios';
 import {Link} from 'react-router-dom';
 
-import {baseURL} from '../util/constants';
 
-const instance = Axios.create({
-    baseURL: baseURL
-});
+const instance = Axios.create();
 
 class Users extends React.Component {
     constructor(props) {
@@ -15,15 +12,17 @@ class Users extends React.Component {
             users: []
         }
         this.onEdit = this.onEdit.bind(this);
-        this.onDelte = this.onDelete.bind(this);
+        this.onDelete = this.onDelete.bind(this);
     }
 
     componentDidMount() {
         instance.get('/users')
         .then( result => {
             this.setState({
-                users: result.data
+                users: result.data,
+                userDeleteResult: null
             })
+            console.log(this.state.users);
         })
         .catch(err => console.log(err));
     }
@@ -33,18 +32,27 @@ class Users extends React.Component {
     }
     
     onDelete(id) {
-        id='5ed514801448e24290c7eb2e'
         console.log('Deleting ' + id);
-        instance.delete(`/users/delete+${id}`)
+        instance.delete(`/users/delete/${id}`)
         .then(result => {
             console.log(result);
+            this.setState( prevState => {
+                return {
+                    users: prevState.users.filter(user => user._id !== id)
+                }
+            });
+            return result.status
+        })
+        .then(status => {
+            if(status === 200)
+                alert('User deleted');
         })
         .catch( err => console.log(err))
     }
 
     render() {
         return(
-            <div>
+            <div className="container">
                 <h1>Users List</h1>
                 <table className="table">
                     <thead>
@@ -77,6 +85,7 @@ const UserList = props => {
                     <Link to='/createUser/'>
                         <button type="button" className="btn btn-link" onClick={() => props.edit(user._id)}>Edit</button>
                     </Link>
+                    |
                     <button type="button" className="btn btn-link" onClick={() => props.delete(user._id)}>Delete</button>
                 </td>
             </tr>)
